@@ -15,7 +15,7 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable (surface src/main.cpp)
+add_executable (surface src/main.cpp src/mls_mpi.cpp)
 target_link_libraries (surface ${PCL_LIBRARIES})
 
 install(TARGETS surface
