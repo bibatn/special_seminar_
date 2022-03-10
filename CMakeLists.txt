@@ -17,3 +17,6 @@ add_definitions(${PCL_DEFINITIONS})
 
 add_executable (surface src/main.cpp)
 target_link_libraries (surface ${PCL_LIBRARIES})
+
+install(TARGETS surface
+  DESTINATION build)
