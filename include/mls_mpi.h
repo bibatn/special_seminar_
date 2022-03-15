@@ -8,6 +8,7 @@ class mls_mpi
 {
 public:
   mls_mpi();
+  void read(std::string & path, pcl::PointCloud<pcl::PointXYZ>::Ptr & cloud);
 private:
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
 };
