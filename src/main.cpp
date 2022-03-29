@@ -22,6 +22,9 @@
 #include <Eigen/LU> // for inverse
 
 #include <chrono>
+
+#include "mls_mpi.h"
+
 using namespace std::chrono_literals;
 #define _OPENMP
 
@@ -50,6 +53,8 @@ void colorize(const pcl::PointCloud<pcl::PointXYZ> &pc,
 int
 main ()
 {
+
+  mls_mpi cloud_part(2,3);
   // Load input file into a PointCloud<T> with an appropriate type
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   // Load bun0.pcd -- should be available with the PCL archive in test
