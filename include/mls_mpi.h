@@ -4,8 +4,9 @@
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
 #include <istream>
+#include <pcl/io/pcd_io.h>
 
-class mls_mpi
+class mls_mpi: public pcl::PCDReader
 {
 public:
   mls_mpi();
