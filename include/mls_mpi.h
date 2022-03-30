@@ -5,6 +5,8 @@
 #include <pcl/point_cloud.h>
 #include <istream>
 #include <pcl/io/pcd_io.h>
+#include "boost/filesystem.hpp"
+#include <boost/algorithm/string.hpp>
 
 class mls_mpi: public pcl::PCDReader
 {
@@ -12,9 +14,18 @@ public:
   mls_mpi(int rank, int size);
   void read(std::string & path, pcl::PointCloud<pcl::PointXYZ>::Ptr & cloud);
   std::istream& go_to_line(std::istream& file, unsigned int num);
+  int readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset);
+  int readHeader (std::istream &fs, pcl::PCLPointCloud2 &cloud,
+                              Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                              int &pcd_version, int &data_type, unsigned int &data_idx);
+  int readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
+                              Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
+                              int &pcd_version, int &data_type, unsigned int &data_idx, const int offset);
+
+
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
 
 private:
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
   int rank, size;
 };
 

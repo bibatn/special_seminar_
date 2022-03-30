@@ -55,6 +55,7 @@ main ()
 {
 
   mls_mpi cloud_part(2,3);
+  cloud_part.cloud->points;
   // Load input file into a PointCloud<T> with an appropriate type
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   // Load bun0.pcd -- should be available with the PCL archive in test
