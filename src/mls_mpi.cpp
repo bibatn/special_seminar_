@@ -500,6 +500,7 @@ mls_mpi::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
 int
 mls_mpi::readBodyASCII (std::istream &fs, pcl::PCLPointCloud2 &cloud, int /*pcd_version*/)
 {
+  go_to_line(fs, cloud.height*cloud.width*rank);
   // Get the number of points the cloud should have
   unsigned int nr_points = cloud.width * cloud.height;
   // The number of elements each line/point should have

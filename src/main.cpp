@@ -24,6 +24,7 @@
 #include <chrono>
 
 #include "mls_mpi.h"
+#include "mpi.h"
 
 using namespace std::chrono_literals;
 #define _OPENMP
@@ -51,14 +52,20 @@ void colorize(const pcl::PointCloud<pcl::PointXYZ> &pc,
 
 
 int
-main ()
+main (int argc, char ** argv)
 {
+  int size, rank;
+  MPI_Init(&argc, &argv);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  mls_mpi cloud_part(2,3);
+  mls_mpi cloud_part(rank, size);
+  std::string filename = "1.pcd";
+//  cloud_part.read(filename, cloud_part.cloud);
   // Load input file into a PointCloud<T> with an appropriate type
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
-  // Load bun0.pcd -- should be available with the PCL archive in test
-  pcl::io::loadPCDFile ("1.pcd", *cloud);
+//  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
+//  // Load bun0.pcd -- should be available with the PCL archive in test
+//  pcl::io::loadPCDFile ("1.pcd", *cloud);
 
   // Create a KD-Tree
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
@@ -73,7 +80,7 @@ main ()
   mls.setComputeNormals (true);
 
   // Set parameters
-  mls.setInputCloud (cloud);
+  mls.setInputCloud (cloud_part.cloud);
   mls.setPolynomialOrder (2);
   mls.setSearchMethod (tree);
   mls.setSearchRadius (0.09);
@@ -93,7 +100,7 @@ main ()
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr out_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-  colorize(*cloud, *out_colored, {0, 255, 0});
+  colorize(*cloud_part.cloud, *out_colored, {0, 255, 0});
 
   pcl::visualization::PCLVisualizer viewer1("Raw");
   viewer1.addPointCloud<pcl::PointXYZRGB>(out_colored, "filtered_green");
@@ -112,6 +119,7 @@ main ()
 
 
   pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
+  MPI_Finalize();
 }
 
 

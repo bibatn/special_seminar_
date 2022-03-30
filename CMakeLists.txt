@@ -20,9 +20,9 @@ include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-add_executable (surface src/main.cpp src/mls_mpi.cpp)
+add_executable (surface include/mls_mpi.h src/main.cpp src/mls_mpi.cpp)
 target_link_libraries (surface ${PCL_LIBRARIES})
-target_link_libraries(surface ${MPI_C_LIBRARIES})
+target_link_libraries(surface ${MPI_LIBRARIES})
 TARGET_LINK_LIBRARIES(surface LINK_PUBLIC ${Boost_LIBRARIES} )
 
 install(TARGETS surface
