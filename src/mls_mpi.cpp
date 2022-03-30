@@ -226,6 +226,9 @@ mls_mpi::readHeader (std::istream &fs, pcl::PCLPointCloud2 &cloud,
       if (line_type.substr (0, 5) == "WIDTH")
       {
         sstream >> cloud.width;
+
+        cloud.width = cloud.width/size; //m
+
         if (sstream.fail ())
           throw "Invalid WIDTH value specified.";
         if (cloud.point_step != 0)
@@ -261,6 +264,9 @@ mls_mpi::readHeader (std::istream &fs, pcl::PCLPointCloud2 &cloud,
         if (!cloud.point_step)
           throw "Number of POINTS specified before COUNT in header!";
         sstream >> nr_points;
+
+        nr_points = nr_points / size;
+
         // Need to allocate: N * point_step
         cloud.data.resize (nr_points * cloud.point_step);
         continue;
