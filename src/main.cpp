@@ -34,11 +34,11 @@ int
 main (int argc, char ** argv)
 {
   int size, rank;
-//  MPI_Init(&argc, &argv);
-//  MPI_Comm_size(MPI_COMM_WORLD, &size);
-//  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Init(&argc, &argv);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  mls_mpi cloud_part(3, 4);
+  mls_mpi cloud_part(rank, size);
   const std::string filename = "1.pcd";
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
@@ -74,29 +74,35 @@ main (int argc, char ** argv)
   mls.process (*mls_points);
   now = std::chrono::high_resolution_clock::now().time_since_epoch();
   uint64_t T2 = now.count();
-  std::cout << "TIME: " << T2-T1 << std::endl;
 
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
-  pcl::PointCloud<pcl::PointXYZRGB>::Ptr out_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
+  if(rank==0)
+  {
+    std::cout << "TIME: " << T2-T1 << std::endl;
 
-//  pcl::visualization::PCLVisualizer viewer1("Raw");
-//  viewer1.addPointCloud<pcl::PointXYZRGB>(out_colored, "filtered_green");
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr out_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-//  while (!viewer1.wasStopped()) {
-//      viewer1.spinOnce();
-//  }
+  //  pcl::visualization::PCLVisualizer viewer1("Raw");
+  //  viewer1.addPointCloud<pcl::PointXYZRGB>(out_colored, "filtered_green");
 
-  std::shared_ptr<pcl::visualization::PCLVisualizer> view (new pcl::visualization::PCLVisualizer("test"));
-  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal> v1(mls_points,0,250,0);
-  view->setBackgroundColor(0.0,0,0);
-  view->addPointCloud<pcl::PointNormal>(mls_points,v1,"sample1");
-//  view->addPointCloudNormals<pcl::PointNormal>(mls_points,50,20,"normal1");
-//  view->addCoordinateSystem(1.0);
-  view->spin();
+  //  while (!viewer1.wasStopped()) {
+  //      viewer1.spinOnce();
+  //  }
+
+    std::shared_ptr<pcl::visualization::PCLVisualizer> view (new pcl::visualization::PCLVisualizer("test"));
+    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal> v1(mls_points,0,250,0);
+    view->setBackgroundColor(0.0,0,0);
+    view->addPointCloud<pcl::PointNormal>(mls_points,v1,"sample1");
+  //  view->addPointCloudNormals<pcl::PointNormal>(mls_points,50,20,"normal1");
+  //  view->addCoordinateSystem(1.0);
+    view->spin();
 
 
-//  pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
+  //  pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
+
+  }
 
 
-//  MPI_Finalize();
+
+  MPI_Finalize();
 }
