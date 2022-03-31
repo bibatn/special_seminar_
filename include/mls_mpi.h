@@ -42,7 +42,7 @@ public:
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
 
 private:
-  int rank, size;
+  int rank_, size_;
 };
 
 #endif // MLS_MPI_H

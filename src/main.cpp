@@ -60,7 +60,7 @@ main (int argc, char ** argv)
 //  MPI_Comm_size(MPI_COMM_WORLD, &size);
 //  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  mls_mpi cloud_part(0, 4);
+  mls_mpi cloud_part(3, 4);
   const std::string filename = "1.pcd";
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
@@ -104,12 +104,12 @@ main (int argc, char ** argv)
 
   colorize(*cloud_part.cloud, *out_colored, {0, 255, 0});
 
-  pcl::visualization::PCLVisualizer viewer1("Raw");
-  viewer1.addPointCloud<pcl::PointXYZRGB>(out_colored, "filtered_green");
+//  pcl::visualization::PCLVisualizer viewer1("Raw");
+//  viewer1.addPointCloud<pcl::PointXYZRGB>(out_colored, "filtered_green");
 
-  while (!viewer1.wasStopped()) {
-      viewer1.spinOnce();
-  }
+//  while (!viewer1.wasStopped()) {
+//      viewer1.spinOnce();
+//  }
 
   std::shared_ptr<pcl::visualization::PCLVisualizer> view (new pcl::visualization::PCLVisualizer("test"));
   pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal> v1(mls_points,0,250,0);

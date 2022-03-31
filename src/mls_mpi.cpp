@@ -2,15 +2,15 @@
 
 mls_mpi::mls_mpi(int rank, int size):cloud (new pcl::PointCloud<pcl::PointXYZ> ())
 {
-  rank = rank;
-  size = size;
+  rank_ = rank;
+  size_ = size;
   PCDReader();
 }
 
 std::istream& mls_mpi::go_to_line(std::istream& file, unsigned int num){
-    file.seekg(std::ios::beg);
-    for(int i=0; i < num - 1; ++i){
-        file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    std::string line;
+    for(int i=0; i < num; ++i){
+      getline (file, line);
     }
     return file;
 }
@@ -227,7 +227,7 @@ mls_mpi::readHeader (std::istream &fs, pcl::PCLPointCloud2 &cloud,
       {
         sstream >> cloud.width;
 
-        cloud.width = cloud.width/size; //m
+        cloud.width = cloud.width/size_; //m
 
         if (sstream.fail ())
           throw "Invalid WIDTH value specified.";
@@ -265,7 +265,7 @@ mls_mpi::readHeader (std::istream &fs, pcl::PCLPointCloud2 &cloud,
           throw "Number of POINTS specified before COUNT in header!";
         sstream >> nr_points;
 
-        nr_points = nr_points / size;
+        nr_points = nr_points / size_;
 
         // Need to allocate: N * point_step
         cloud.data.resize (nr_points * cloud.point_step);
@@ -500,7 +500,8 @@ mls_mpi::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
 int
 mls_mpi::readBodyASCII (std::istream &fs, pcl::PCLPointCloud2 &cloud, int /*pcd_version*/)
 {
-  go_to_line(fs, cloud.height*cloud.width*rank);
+  std::cout <<"lenght:" << cloud.height*cloud.width*rank_ <<std::endl;
+  go_to_line(fs, cloud.height*cloud.width*rank_);
   // Get the number of points the cloud should have
   unsigned int nr_points = cloud.width * cloud.height;
   // The number of elements each line/point should have
