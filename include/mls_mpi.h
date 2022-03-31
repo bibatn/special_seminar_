@@ -16,21 +16,26 @@ class mls_mpi: public pcl::PCDReader
 {
 public:
   mls_mpi(int rank, int size);
-  void read(std::string & path, pcl::PointCloud<pcl::PointXYZ>::Ptr & cloud);
+//  void read(std::string & path, pcl::PointCloud<pcl::PointXYZ>::Ptr & cloud);
+  inline int
+  loadPCDFile (const std::string &file_name, pcl::PCLPointCloud2 &cloud)
+  {
+    return mls_mpi::read (file_name, cloud);
+  }
   std::istream& go_to_line(std::istream& file, unsigned int num);
-  int readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset);
+  int readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset = 0);
   int readHeader (std::istream &fs, pcl::PCLPointCloud2 &cloud,
                               Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
                               int &pcd_version, int &data_type, unsigned int &data_idx);
   int readHeader (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
                               Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
-                              int &pcd_version, int &data_type, unsigned int &data_idx, const int offset);
+                              int &pcd_version, int &data_type, unsigned int &data_idx, const int offset = 0);
 
-  int read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset);
+  int read (const std::string &file_name, pcl::PCLPointCloud2 &cloud, const int offset = 0);
 
   int read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
                         Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int &pcd_version,
-                        const int offset);
+                        const int offset = 0);
   int readBodyASCII (std::istream &fs, pcl::PCLPointCloud2 &cloud, int /*pcd_version*/);
 
 

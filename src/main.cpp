@@ -17,6 +17,7 @@
 #include <pcl/common/eigen.h>
 #include <pcl/search/kdtree.h> // for KdTree
 #include <pcl/search/organized.h> // for OrganizedNeighbor
+#include <pcl/conversions.h>
 
 #include <Eigen/Geometry> // for cross
 #include <Eigen/LU> // for inverse
@@ -55,16 +56,17 @@ int
 main (int argc, char ** argv)
 {
   int size, rank;
-  MPI_Init(&argc, &argv);
-  MPI_Comm_size(MPI_COMM_WORLD, &size);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+//  MPI_Init(&argc, &argv);
+//  MPI_Comm_size(MPI_COMM_WORLD, &size);
+//  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  mls_mpi cloud_part(rank, size);
-  std::string filename = "1.pcd";
-//  cloud_part.read(filename, cloud_part.cloud);
-  // Load input file into a PointCloud<T> with an appropriate type
-//  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
-//  // Load bun0.pcd -- should be available with the PCL archive in test
+  mls_mpi cloud_part(0, 4);
+  const std::string filename = "1.pcd";
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
+  pcl::PCLPointCloud2 point_cloud2;
+  cloud_part.loadPCDFile(filename, point_cloud2);
+  pcl::fromPCLPointCloud2(point_cloud2, *cloud);
+
 //  pcl::io::loadPCDFile ("1.pcd", *cloud);
 
   // Create a KD-Tree
@@ -80,7 +82,7 @@ main (int argc, char ** argv)
   mls.setComputeNormals (true);
 
   // Set parameters
-  mls.setInputCloud (cloud_part.cloud);
+  mls.setInputCloud (cloud);
   mls.setPolynomialOrder (2);
   mls.setSearchMethod (tree);
   mls.setSearchRadius (0.09);
@@ -119,7 +121,7 @@ main (int argc, char ** argv)
 
 
   pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
-  MPI_Finalize();
+//  MPI_Finalize();
 }
 
 
