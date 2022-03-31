@@ -45,33 +45,24 @@ main (int argc, char ** argv)
   cloud_part.loadPCDFile(filename, point_cloud2);
   pcl::fromPCLPointCloud2(point_cloud2, *cloud);
 
-//  pcl::io::loadPCDFile ("1.pcd", *cloud);
-
   // Create a KD-Tree
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
 
-//  pcl::PointCloud<pcl::PointXYZ>::Ptr output(new pcl::PointCloud<pcl::PointXYZ>);
   // Output has the PointNormal type in order to store the normals calculated by MLS
   pcl::PointCloud<pcl::PointNormal>::Ptr mls_points(new pcl::PointCloud<pcl::PointNormal>);
 
-  // Init object (second point type is for the normals, even if unused)
-  pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal> mls;
+  cloud_part.setInputCloud (cloud);
+  cloud_part.setPolynomialOrder (2);
+  cloud_part.setSearchMethod (tree);
+  cloud_part.setSearchRadius (0.09);
 
-  mls.setComputeNormals (true);
-
-  // Set parameters
-  mls.setInputCloud (cloud);
-  mls.setPolynomialOrder (2);
-  mls.setSearchMethod (tree);
-  mls.setSearchRadius (0.09);
-
-  mls.setNumberOfThreads(1);
+  cloud_part.setNumberOfThreads(1);
 
 
   // Reconstruct
   std::chrono::nanoseconds now = std::chrono::high_resolution_clock::now().time_since_epoch();
   uint64_t T1 = now.count();
-  mls.process (*mls_points);
+  cloud_part.process (*mls_points);
   now = std::chrono::high_resolution_clock::now().time_since_epoch();
   uint64_t T2 = now.count();
 

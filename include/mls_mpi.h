@@ -8,11 +8,11 @@
 #include <pcl/console/time.h>
 #include <pcl/common/io.h>
 #include <pcl/types.h>
-//#include <pcl/io/file_io.h>
+#include <pcl/surface/mls.h>
 #include "boost/filesystem.hpp"
 #include <boost/algorithm/string.hpp>
 
-class mls_mpi: public pcl::PCDReader
+class mls_mpi: public pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal>
 {
 public:
   mls_mpi(int rank, int size);
@@ -40,6 +40,12 @@ public:
 
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud;
+
+  enum
+  {
+    PCD_V6 = 0,
+    PCD_V7 = 1
+  };
 
 private:
   int rank_, size_;
