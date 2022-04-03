@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(surface)
 
 include_directories(include)
-find_package(PCL 1.12 REQUIRED PATHS usr/local/lib)
+find_package(PCL REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(MPI REQUIRED)
 FIND_PACKAGE( Boost REQUIRED )
