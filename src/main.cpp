@@ -43,6 +43,23 @@ main (int argc, char ** argv)
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
   cloud_part.read(filename, point_cloud2);
+  if(size > 1)
+  {
+    //_
+    pcl::PCLPointCloud2 left_bord;
+    pcl::PCLPointCloud2 right_bord;
+    left_bord.data.resize(point_cloud2.height);
+    right_bord.data.resize(point_cloud2.height);
+    left_bord.width = 1; right_bord.width = 1;
+    left_bord.height = point_cloud2.height; right_bord.height = point_cloud2.height;
+
+    MPI_Sendrecv(&point_cloud2.data[(point_cloud2.height-1)*point_cloud2.width], point_cloud2.height, MPI_UINT8_T, (rank + 1) % size, 777, &left_bord.data[0], point_cloud2.height, MPI_UINT8_T, (rank - 1 + size) % size, 777, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    MPI_Sendrecv(&point_cloud2.data[0], point_cloud2.height, MPI_UINT8_T, (rank - 1 + size) % size, 777, &right_bord.data[0], point_cloud2.height, MPI_UINT8_T, (rank + 1) % size, 777, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+    point_cloud2 = left_bord + point_cloud2 + right_bord;
+    //
+
+  }
   pcl::fromPCLPointCloud2(point_cloud2, *cloud);
 
   // Create a KD-Tree
