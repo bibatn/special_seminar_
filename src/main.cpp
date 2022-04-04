@@ -42,7 +42,7 @@ main (int argc, char ** argv)
   const std::string filename = "1.pcd";
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
-  cloud_part.loadPCDFile(filename, point_cloud2);
+  cloud_part.read(filename, point_cloud2);
   pcl::fromPCLPointCloud2(point_cloud2, *cloud);
 
   // Create a KD-Tree
