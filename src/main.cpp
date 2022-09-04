@@ -79,7 +79,7 @@ main (int argc, char ** argv)
   // Reconstruct
   std::chrono::nanoseconds now = std::chrono::high_resolution_clock::now().time_since_epoch();
   uint64_t T1 = now.count();
-//  cloud_part.process (*mls_points);
+  cloud_part.process (*mls_points);
   now = std::chrono::high_resolution_clock::now().time_since_epoch();
   uint64_t T2 = now.count();
 
