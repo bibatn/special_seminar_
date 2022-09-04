@@ -15,7 +15,7 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES(/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/surface/include/pcl/surface
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/common/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/include
-        /home/m/Documents/CUSTOM_PCL/eigen
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/eigen
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/io/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/search/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/kdtree/include
