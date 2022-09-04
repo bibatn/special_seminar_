@@ -406,135 +406,119 @@ mls_mpi::read (const std::string &file_name, pcl::PCLPointCloud2 &cloud,
 int
 mls_mpi::readBodyASCII (std::istream &fs, pcl::PCLPointCloud2 &cloud, int /*pcd_version*/)
 {
-  std::cout <<"lenght:" << cloud.height*cloud.width*rank_ <<std::endl;
-  go_to_line(fs, cloud.height*cloud.width*rank_);
-  // Get the number of points the cloud should have
-  unsigned int nr_points = cloud.width * cloud.height;
-  // The number of elements each line/point should have
-  const unsigned int elems_per_line = std::accumulate (cloud.fields.cbegin (), cloud.fields.cend (), 0u,
-                                                       [](const auto& i, const auto& field){ return (i + field.count); });
-  PCL_DEBUG ("[pcl::PCDReader::readBodyASCII] Will check that each line in the PCD file has %u elements.\n", elems_per_line);
+    // Get the number of points the cloud should have
+    unsigned int nr_points = cloud.width * cloud.height;
 
-  // Setting the is_dense property to true by default
-  cloud.is_dense = true;
+    // Setting the is_dense property to true by default
+    cloud.is_dense = true;
 
-  unsigned int idx = 0;
-  std::string line;
-  std::vector<std::string> st;
-  std::istringstream is;
-  is.imbue (std::locale::classic ());
+    unsigned int idx = 0;
+    std::string line;
+    std::vector<std::string> st;
 
-  try
-  {
-    while (idx < nr_points && !fs.eof ())
+    try
     {
-      getline (fs, line);
-      // Ignore empty lines
-      if (line.empty())
-        continue;
-
-      // Tokenize the line
-      boost::trim (line);
-      boost::split (st, line, boost::is_any_of ("\t\r "), boost::token_compress_on);
-
-      if (st.size () != elems_per_line) // If this is not checked, an exception might occur while accessing st
-      {
-        PCL_WARN ("[pcl::PCDReader::readBodyASCII] Possibly malformed PCD file: point number %u has %zu elements, but should have %u\n",
-                  idx+1, st.size (), elems_per_line);
-        ++idx; // Skip this line/point, but read all others
-        continue;
-      }
-
-      if (idx >= nr_points)
-      {
-        PCL_WARN ("[pcl::PCDReader::read] input has more points (%d) than advertised (%d)!\n", idx, nr_points);
-        break;
-      }
-
-      std::size_t total = 0;
-      // Copy data
-      for (unsigned int d = 0; d < static_cast<unsigned int> (cloud.fields.size ()); ++d)
-      {
-        // Ignore invalid padded dimensions that are inherited from binary data
-        if (cloud.fields[d].name == "_")
+        while (idx < nr_points && !fs.eof ())
         {
-          total += cloud.fields[d].count; // jump over this many elements in the string token
-          continue;
+            getline (fs, line);
+            // Ignore empty lines
+            if (line == "")
+                continue;
+
+            // Tokenize the line
+            boost::trim (line);
+            boost::split (st, line, boost::is_any_of ("\t\r "), boost::token_compress_on);
+
+            if (idx >= nr_points)
+            {
+                PCL_WARN ("[pcl::PCDReader::read] input has more points (%d) than advertised (%d)!\n", idx, nr_points);
+                break;
+            }
+
+            size_t total = 0;
+            // Copy data
+            for (unsigned int d = 0; d < static_cast<unsigned int> (cloud.fields.size ()); ++d)
+            {
+                // Ignore invalid padded dimensions that are inherited from binary data
+                if (cloud.fields[d].name == "_")
+                {
+                    total += cloud.fields[d].count; // jump over this many elements in the string token
+                    continue;
+                }
+                for (unsigned int c = 0; c < cloud.fields[d].count; ++c)
+                {
+                    switch (cloud.fields[d].datatype)
+                    {
+                        case pcl::PCLPointField::INT8:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::INT8>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        case pcl::PCLPointField::UINT8:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::UINT8>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        case pcl::PCLPointField::INT16:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::INT16>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        case pcl::PCLPointField::UINT16:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::UINT16>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        case pcl::PCLPointField::INT32:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::INT32>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        case pcl::PCLPointField::UINT32:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::UINT32>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        case pcl::PCLPointField::FLOAT32:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::FLOAT32>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        case pcl::PCLPointField::FLOAT64:
+                        {
+                            pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::FLOAT64>::type> (
+                                    st.at (total + c), cloud, idx, d, c);
+                            break;
+                        }
+                        default:
+                            PCL_WARN ("[pcl::PCDReader::read] Incorrect field data type specified (%d)!\n",cloud.fields[d].datatype);
+                            break;
+                    }
+                }
+                total += cloud.fields[d].count; // jump over this many elements in the string token
+            }
+            idx++;
         }
-        for (pcl::uindex_t c = 0; c < cloud.fields[d].count; ++c)
-        {
-          switch (cloud.fields[d].datatype)
-          {
-            case pcl::PCLPointField::INT8:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::INT8>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            case pcl::PCLPointField::UINT8:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::UINT8>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            case pcl::PCLPointField::INT16:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::INT16>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            case pcl::PCLPointField::UINT16:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::UINT16>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            case pcl::PCLPointField::INT32:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::INT32>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            case pcl::PCLPointField::UINT32:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::UINT32>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            case pcl::PCLPointField::FLOAT32:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::FLOAT32>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            case pcl::PCLPointField::FLOAT64:
-            {
-              pcl::copyStringValue<pcl::traits::asType<pcl::PCLPointField::FLOAT64>::type> (
-                  st.at (total + c), cloud, idx, d, c, is);
-              break;
-            }
-            default:
-              PCL_WARN ("[pcl::PCDReader::read] Incorrect field data type specified (%d)!\n",cloud.fields[d].datatype);
-              break;
-          }
-        }
-        total += cloud.fields[d].count; // jump over this many elements in the string token
-      }
-      idx++;
     }
-  }
-  catch (const char *exception)
-  {
-    PCL_ERROR ("[pcl::PCDReader::read] %s\n", exception);
-    return (-1);
-  }
+    catch (const char *exception)
+    {
+        PCL_ERROR ("[pcl::PCDReader::read] %s\n", exception);
+        return (-1);
+    }
 
-  if (idx != nr_points)
-  {
-    PCL_ERROR ("[pcl::PCDReader::read] Number of points read (%d) is different than expected (%d)\n", idx, nr_points);
-    return (-1);
-  }
+    if (idx != nr_points)
+    {
+        PCL_ERROR ("[pcl::PCDReader::read] Number of points read (%d) is different than expected (%d)\n", idx, nr_points);
+        return (-1);
+    }
 
-  return (0);
+    return (0);
 }
 

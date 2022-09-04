@@ -7,8 +7,8 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/console/time.h>
 #include <pcl/common/io.h>
-#include <pcl/types.h>
-#include <pcl/surface/mls.h>
+//#include <pcl/types.h>
+#include <mls.h>
 #include "boost/filesystem.hpp"
 #include <boost/algorithm/string.hpp>
 
