@@ -16,7 +16,7 @@ INCLUDE_DIRECTORIES(/home/m/projects/source_code/pcl/surface/include/pcl/surface
         /home/m/projects/source_code/pcl/common/include
         /home/m/projects/source_code/pcl/build/include
         /home/m/Documents/CUSTOM_PCL/eigen
-        /home/m/projects/source_code/pcl/io/include
+        /home/m/Documents/CUSTOM_PCL/pcl/io/include
         /home/m/projects/source_code/pcl/search/include
         /home/m/projects/source_code/pcl/kdtree/include
         /home/m/projects/source_code/pcl/octree/include
@@ -36,13 +36,13 @@ add_library(boost_filesystem SHARED IMPORTED)
 
 
 
-set_property(TARGET mls PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_surface.so.1.9.1")
-set_property(TARGET common PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_common.so.1.9.1")
-set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_kdtree.so.1.9.1")
-set_property(TARGET pcl_search PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_search.so.1.9.1")
-set_property(TARGET octree PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_octree.so.1.9.1")
-set_property(TARGET visualization PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_visualization.so.1.9.1")
-set_property(TARGET geometry PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_visualization.so.1.9.1")
+set_property(TARGET mls PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_surface.so.1.9.1")
+set_property(TARGET common PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_common.so.1.9.1")
+set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_kdtree.so.1.9.1")
+set_property(TARGET pcl_search PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_search.so.1.9.1")
+set_property(TARGET octree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_octree.so.1.9.1")
+set_property(TARGET visualization PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_visualization.so.1.9.1")
+set_property(TARGET geometry PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_visualization.so.1.9.1")
 set_property(TARGET boost_filesystem PROPERTY IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0")
 
 
