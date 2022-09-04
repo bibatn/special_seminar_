@@ -12,17 +12,17 @@ find_package(MPI REQUIRED)
 FIND_PACKAGE( Boost REQUIRED )
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
-INCLUDE_DIRECTORIES(/home/m/projects/source_code/pcl/surface/include/pcl/surface
-        /home/m/projects/source_code/pcl/common/include
-        /home/m/projects/source_code/pcl/build/include
+INCLUDE_DIRECTORIES(/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/surface/include/pcl/surface
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/common/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/include
         /home/m/Documents/CUSTOM_PCL/eigen
-        /home/m/Documents/CUSTOM_PCL/pcl/io/include
-        /home/m/projects/source_code/pcl/search/include
-        /home/m/projects/source_code/pcl/kdtree/include
-        /home/m/projects/source_code/pcl/octree/include
-        /home/m/projects/source_code/pcl/surface/include
-        /home/m/projects/source_code/pcl/visualization/include
-        /home/m/projects/source_code/pcl/geometry/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/io/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/search/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/kdtree/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/octree/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/surface/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/visualization/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/geometry/include
         /usr/include/vtk-7.1
         )
 add_library(mls SHARED IMPORTED)
