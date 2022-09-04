@@ -1,7 +1,5 @@
 #include "mls_mpi.h"
 #include <pcl/point_types.h>
-
-#include <pcl/common/eigen.h>
 #include <pcl/search/kdtree.h> // for KdTree
 #include <pcl/search/organized.h> // for OrganizedNeighbor
 #include <pcl/conversions.h>
