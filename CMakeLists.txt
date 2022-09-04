@@ -23,6 +23,7 @@ INCLUDE_DIRECTORIES(/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/surface/inc
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/surface/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/visualization/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/geometry/include
+        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/flann/src/cpp
         /usr/include/vtk-7.1
         )
 add_library(mls SHARED IMPORTED)
