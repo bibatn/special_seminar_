@@ -8,7 +8,9 @@
 #include <pcl/console/time.h>
 #include <pcl/common/io.h>
 #include <mls.h>
+#define BOOST_NO_CXX11_SCOPED_ENUMS
 #include "boost/filesystem.hpp"
+#undef BOOST_NO_CXX11_SCOPED_ENUMS
 #include <boost/algorithm/string.hpp>
 
 class mls_mpi: public pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal>

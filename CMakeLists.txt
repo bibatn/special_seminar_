@@ -34,6 +34,7 @@ add_library(boost_system SHARED IMPORTED)
 
 
 
+
 set_property(TARGET mls PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_surface.so.1.9.1")
 set_property(TARGET common PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_common.so.1.9.1")
 set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_kdtree.so.1.9.1")
