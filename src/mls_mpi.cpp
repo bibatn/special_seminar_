@@ -186,7 +186,7 @@ mls_mpi::readHeader (std::istream &fs, pcl::PCLPointCloud2 &cloud,
                 for (int i = 0; i < specified_channel_count; ++i)
                 {
                     field_types[i] = st.at (i + 1).c_str ()[0];
-                    cloud.fields[i].datatype = static_cast<uint8_t> (getFieldType (field_sizes[i], field_types[i]));
+                    cloud.fields[i].datatype = static_cast<uint8_t> (pcl::getFieldType (field_sizes[i], field_types[i]));
                 }
                 continue;
             }
