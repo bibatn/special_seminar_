@@ -31,6 +31,7 @@ add_library(kdtree SHARED IMPORTED)
 add_library(pcl_search SHARED IMPORTED)
 add_library(octree SHARED IMPORTED)
 add_library(boost_system SHARED IMPORTED)
+add_library(boost_filesystem SHARED IMPORTED)
 
 
 
@@ -41,6 +42,7 @@ set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/e
 set_property(TARGET pcl_search PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_search.so.1.9.1")
 set_property(TARGET octree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_octree.so.1.9.1")
 set_property(TARGET boost_system PROPERTY IMPORTED_LOCATION "/usr/lib64/libboost_system-mt.so.1.53.0")
+set_property(TARGET boost_filesystem PROPERTY IMPORTED_LOCATION "/usr/lib64/libboost_filesystem.so.1.53.0")
 
 
 
@@ -62,6 +64,7 @@ target_link_libraries (surface kdtree)
 target_link_libraries (surface pcl_search)
 target_link_libraries (surface octree)
 target_link_libraries (surface boost_system)
+target_link_libraries (surface boost_filesystem)
 
 
 target_link_libraries(surface ${MPI_LIBRARIES})
