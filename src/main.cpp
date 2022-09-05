@@ -5,10 +5,10 @@
 #include <pcl/conversions.h>
 
 
-#include <chrono>
+//#include <chrono>
 #include "mpi.h"
 
-using namespace std::chrono_literals;
+//using namespace std::chrono_literals;
 
 int
 main (int argc, char ** argv)
@@ -57,15 +57,15 @@ main (int argc, char ** argv)
 
 
   // Reconstruct
-  std::chrono::nanoseconds now = std::chrono::high_resolution_clock::now().time_since_epoch();
-  uint64_t T1 = now.count();
+//  std::chrono::nanoseconds now = std::chrono::high_resolution_clock::now().time_since_epoch();
+//  uint64_t T1 = now.count();
   cloud_part.process (*mls_points);
-  now = std::chrono::high_resolution_clock::now().time_since_epoch();
-  uint64_t T2 = now.count();
+//  now = std::chrono::high_resolution_clock::now().time_since_epoch();
+//  uint64_t T2 = now.count();
 
   if(rank==0)
   {
-    std::cout << "TIME: " << T2-T1 << std::endl;
+//    std::cout << "TIME: " << T2-T1 << std::endl;
   //  pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
 
   }
