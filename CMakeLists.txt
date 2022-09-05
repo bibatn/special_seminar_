@@ -21,7 +21,6 @@ INCLUDE_DIRECTORIES(/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/surface/inc
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/kdtree/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/octree/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/surface/include
-        /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/visualization/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/geometry/include
         /home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/flann/src/cpp
         /usr/include/vtk-7.1
@@ -31,8 +30,6 @@ add_library(common SHARED IMPORTED)
 add_library(kdtree SHARED IMPORTED)
 add_library(pcl_search SHARED IMPORTED)
 add_library(octree SHARED IMPORTED)
-add_library(visualization SHARED IMPORTED)
-add_library(geometry SHARED IMPORTED)
 add_library(boost_filesystem SHARED IMPORTED)
 
 
@@ -42,8 +39,6 @@ set_property(TARGET common PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/e
 set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_kdtree.so.1.9.1")
 set_property(TARGET pcl_search PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_search.so.1.9.1")
 set_property(TARGET octree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_octree.so.1.9.1")
-set_property(TARGET visualization PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_visualization.so.1.9.1")
-set_property(TARGET geometry PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_visualization.so.1.9.1")
 set_property(TARGET boost_filesystem PROPERTY IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0")
 
 
@@ -65,7 +60,6 @@ target_link_libraries (surface common)
 target_link_libraries (surface kdtree)
 target_link_libraries (surface pcl_search)
 target_link_libraries (surface octree)
-target_link_libraries (surface visualization)
 target_link_libraries (surface boost_filesystem)
 
 
