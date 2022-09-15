@@ -13,17 +13,17 @@ FIND_PACKAGE( Boost REQUIRED )
 find_package(VTK)
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 include(${VTK_USE_FILE})
-INCLUDE_DIRECTORIES(/home/m/projects/source_code/pcl/surface/include/pcl/surface
-        /home/m/projects/source_code/pcl/common/include
-        /home/m/projects/source_code/pcl/build/include
-        /home/m/Documents/CUSTOM_PCL/eigen
-        /home/m/Documents/CUSTOM_PCL/pcl/io/include
-        /home/m/projects/source_code/pcl/search/include
-        /home/m/projects/source_code/pcl/kdtree/include
-        /home/m/projects/source_code/pcl/octree/include
-        /home/m/projects/source_code/pcl/surface/include
-        /home/m/projects/source_code/pcl/visualization/include
-        /home/m/projects/source_code/pcl/geometry/include
+INCLUDE_DIRECTORIES(/home/m/projects/pcl/surface/include/pcl/surface
+        /home/m/projects/pcl/common/include
+        /home/m/projects/pcl/build/include
+        /home/m/projects/code_from_source/eigen
+        /home/m/projects/pcl/io/include
+        /home/m/projects/pcl/search/include
+        /home/m/projects/pcl/kdtree/include
+        /home/m/projects/pcl/octree/include
+        /home/m/projects/pcl/surface/include
+        /home/m/projects/pcl/visualization/include
+        /home/m/projects/pcl/geometry/include
         /usr/include/vtk-7.1
         )
 add_library(mls SHARED IMPORTED)
@@ -37,14 +37,15 @@ add_library(boost_filesystem SHARED IMPORTED)
 
 
 
-set_property(TARGET mls PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_surface.so.1.9.1")
-set_property(TARGET common PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_common.so.1.9.1")
-set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_kdtree.so.1.9.1")
-set_property(TARGET pcl_search PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_search.so.1.9.1")
-set_property(TARGET octree PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_octree.so.1.9.1")
-set_property(TARGET visualization PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_visualization.so.1.9.1")
-set_property(TARGET geometry PROPERTY IMPORTED_LOCATION "/home/m/projects/source_code/pcl/build/lib/libpcl_visualization.so.1.9.1")
+set_property(TARGET mls PROPERTY IMPORTED_LOCATION "/home/m/projects/pcl/build/lib/libpcl_surface.so.1.9.1")
+set_property(TARGET common PROPERTY IMPORTED_LOCATION "/home/m/projects/pcl/build/lib/libpcl_common.so.1.9.1")
+set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home/m/projects/pcl/build/lib/libpcl_kdtree.so.1.9.1")
+set_property(TARGET pcl_search PROPERTY IMPORTED_LOCATION "/home/m/projects/pcl/build/lib/libpcl_search.so.1.9.1")
+set_property(TARGET octree PROPERTY IMPORTED_LOCATION "/home/m/projects/pcl/build/lib/libpcl_octree.so.1.9.1")
+set_property(TARGET visualization PROPERTY IMPORTED_LOCATION "/home/m/projects/pcl/build/lib/libpcl_visualization.so.1.9.1")
+set_property(TARGET geometry PROPERTY IMPORTED_LOCATION "/home/m/projects/pcl/build/lib/libpcl_visualization.so.1.9.1")
 set_property(TARGET boost_filesystem PROPERTY IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0")
+
 
 
 
