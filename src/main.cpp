@@ -4,11 +4,31 @@
 #include <pcl/search/organized.h> // for OrganizedNeighbor
 #include <pcl/conversions.h>
 
-
+#include <sys/time.h>
 //#include <chrono>
 #include "mpi.h"
 
 //using namespace std::chrono_literals;
+
+double mytime(const int n)
+{
+    static struct timeval tv1,tv2,dtv;
+    static struct timezone tz;
+    if (n==0){
+        gettimeofday(&tv1,&tz);
+        return 0;
+    }
+    else{
+        gettimeofday(&tv2, &tz);
+        dtv.tv_sec  = tv2.tv_sec  - tv1.tv_sec;
+        dtv.tv_usec = tv2.tv_usec - tv1.tv_usec;
+        if(dtv.tv_usec<0){
+            dtv.tv_sec--;
+            dtv.tv_usec+=1000000;
+        }
+        return (double)(dtv.tv_sec) + (double)(dtv.tv_usec)*1e-6;
+    }
+}
 
 int
 main (int argc, char ** argv)
@@ -59,13 +79,14 @@ main (int argc, char ** argv)
   // Reconstruct
 //  std::chrono::nanoseconds now = std::chrono::high_resolution_clock::now().time_since_epoch();
 //  uint64_t T1 = now.count();
+    mytime(0);
   cloud_part.process (*mls_points);
 //  now = std::chrono::high_resolution_clock::now().time_since_epoch();
 //  uint64_t T2 = now.count();
 
   if(rank==0)
   {
-//    std::cout << "TIME: " << T2-T1 << std::endl;
+    std::cout << "TIME: " << mytime(1) << std::endl;
   //  pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
 
   }
