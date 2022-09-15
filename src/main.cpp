@@ -43,6 +43,7 @@ main (int argc, char ** argv)
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
   cloud_part.read(filename, point_cloud2);
+  std::cout<< "Ширина облака:  " << point_cloud2.width << "Высота облака:  " << point_cloud2.height << std::endl;
 //  if(size > 1)
 //  {
 //    //_
