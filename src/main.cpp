@@ -39,7 +39,7 @@ main (int argc, char ** argv)
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   mls_mpi cloud_part(rank, size);
-  const std::string filename = "1.pcd";
+  const std::string filename = argv[1];
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
   cloud_part.read(filename, point_cloud2);
