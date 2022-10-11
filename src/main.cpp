@@ -28,7 +28,6 @@
 #include "mpi.h"
 
 using namespace std::chrono_literals;
-#define _OPENMP
 
 int
 main (int argc, char ** argv)
@@ -43,7 +42,30 @@ main (int argc, char ** argv)
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
   cloud_part.read(filename, point_cloud2);
-  pcl::fromPCLPointCloud2(point_cloud2, *cloud);
+  int cloud_height = point_cloud2.height; //
+    if(size>1)
+    {
+        //_
+        pcl::PCLPointCloud2 left_bord;
+        pcl::PCLPointCloud2 right_bord;
+        left_bord.data.resize(point_cloud2.height * point_cloud2.point_step); // 12 bytes for one point
+        right_bord.data.resize(point_cloud2.height * point_cloud2.point_step); // 12 bytes for one point
+        left_bord.width = 1; right_bord.width = 1;
+        left_bord.height = point_cloud2.height; right_bord.height = point_cloud2.height;
+        left_bord.fields = point_cloud2.fields; right_bord.fields = point_cloud2.fields;
+        left_bord.point_step = point_cloud2.point_step; right_bord.point_step = point_cloud2.point_step;
+        left_bord.is_dense = point_cloud2.is_dense; right_bord.point_step = point_cloud2.is_dense;
+
+        MPI_Sendrecv(&point_cloud2.data[cloud_height*(point_cloud2.width-1) * point_cloud2.point_step], cloud_height * point_cloud2.point_step, MPI_UNSIGNED_CHAR, (rank + 1) % size, 777, &left_bord.data[0], cloud_height * point_cloud2.point_step, MPI_UNSIGNED_CHAR, (rank - 1 + size) % size, 777, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Sendrecv(&point_cloud2.data[0], cloud_height * point_cloud2.point_step, MPI_UNSIGNED_CHAR, (rank - 1 + size) % size, 777, &right_bord.data[0], cloud_height * point_cloud2.point_step, MPI_UNSIGNED_CHAR, (rank + 1) % size, 777, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+        point_cloud2 = left_bord + point_cloud2 + right_bord;
+        //
+
+    }
+
+    pcl::fromPCLPointCloud2(point_cloud2, *cloud);
+
 
   // Create a KD-Tree
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
@@ -73,13 +95,6 @@ main (int argc, char ** argv)
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr out_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-  //  pcl::visualization::PCLVisualizer viewer1("Raw");
-  //  viewer1.addPointCloud<pcl::PointXYZRGB>(out_colored, "filtered_green");
-
-  //  while (!viewer1.wasStopped()) {
-  //      viewer1.spinOnce();
-  //  }
-
     std::shared_ptr<pcl::visualization::PCLVisualizer> view (new pcl::visualization::PCLVisualizer("test"));
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal> v1(mls_points,0,250,0);
     view->setBackgroundColor(0.0,0,0);
@@ -92,8 +107,5 @@ main (int argc, char ** argv)
   //  pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
 
   }
-
-
-
   MPI_Finalize();
 }
