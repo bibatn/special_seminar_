@@ -105,11 +105,20 @@ main (int argc, char ** argv)
   recvcounts.resize(size);
   int size_of_cloud_part = mls_points->size();
   MPI_Gather(&size_of_cloud_part, 1, MPI_INT, &sizes[0],1, MPI_INT, 0, MPI_COMM_WORLD);
+  displs[0] = 0;
+  for(int i = 1; i < sizes.size(); i++)
+      displs[i] = displs[i-1] + sizes[i];
   for(int i = 0; i < sizes.size(); i++)
-  {
-      displs[i] = recvcounts[i] = sizes[i];
-  }
+      recvcounts[i] = sizes[i];
+  pcl::PointCloud<pcl::PointNormal>::Ptr union_cloud(new pcl::PointCloud<pcl::PointNormal>);
+  union_cloud->points.resize(std::accumulate(sizes.begin(), sizes.end(), 0));
+  union_cloud->height = 1;
+  union_cloud->width = std::accumulate(sizes.begin(), sizes.end(), 0);
+  union_cloud->is_dense = true;
 
+  MPI_Datatype message_type;
+  Build_derived_type(&union_cloud->points[0], &message_type);
+  MPI_Gatherv(&mls_points->points[0], mls_points->size(), message_type, &union_cloud->points[0], &recvcounts[0], &displs[0], message_type, 0, MPI_COMM_WORLD);
 
   if(rank==0)
   {
@@ -122,9 +131,9 @@ main (int argc, char ** argv)
 
 
     std::shared_ptr<pcl::visualization::PCLVisualizer> view (new pcl::visualization::PCLVisualizer("test"));
-    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal> v1(mls_points,0,250,0);
+    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal> v1(union_cloud,0,250,0);
     view->setBackgroundColor(0.0,0,0);
-    view->addPointCloud<pcl::PointNormal>(mls_points,v1,"sample1");
+    view->addPointCloud<pcl::PointNormal>(union_cloud,v1,"sample1");
     view->spin();
 
 
