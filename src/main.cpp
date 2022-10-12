@@ -28,7 +28,38 @@
 #include "mpi.h"
 
 using namespace std::chrono_literals;
-#define _OPENMP
+
+void Build_derived_type(pcl::PointNormal * indata, MPI_Datatype* message_type_ptr)
+{
+    int block_lengths[3];
+    MPI_Aint displacements[3];
+    MPI_Aint addresses[4];
+
+    MPI_Datatype typelist[3];
+
+    typelist[0] = MPI_FLOAT;
+    typelist[1] = MPI_FLOAT;
+    typelist[2] = MPI_FLOAT;
+/* Определить количество элементов каждого типа */
+
+    block_lengths[0] = block_lengths[1] = block_lengths[2] = 4;
+
+/* Вычислить смещения элементов
+* относительно indata */
+    MPI_Get_address(indata, &addresses[0]);
+
+    MPI_Get_address(&(indata->data), &addresses[1]);
+    MPI_Get_address(&(indata->data_n), &addresses[2]);
+    MPI_Get_address(&(indata->data_c), &addresses[3]);
+
+    displacements[0] = addresses[1] - addresses[0];
+    displacements[1] = addresses[2] - addresses[0];
+    displacements[2] = addresses[3] - addresses[0];
+
+    MPI_Type_create_struct(3, block_lengths, displacements, typelist, message_type_ptr);
+
+    MPI_Type_commit(message_type_ptr);
+}
 
 int
 main (int argc, char ** argv)
@@ -66,34 +97,39 @@ main (int argc, char ** argv)
   now = std::chrono::high_resolution_clock::now().time_since_epoch();
   uint64_t T2 = now.count();
 
+  std::vector<int> sizes;
+  std::vector<int> displs;
+  std::vector<int> recvcounts;
+  sizes.resize(size);
+  displs.resize(size);
+  recvcounts.resize(size);
+  int size_of_cloud_part = mls_points->size();
+  MPI_Gather(&size_of_cloud_part, 1, MPI_INT, &sizes[0],1, MPI_INT, 0, MPI_COMM_WORLD);
+  for(int i = 0; i < sizes.size(); i++)
+  {
+      displs[i] = recvcounts[i] = sizes[i];
+  }
+
+
   if(rank==0)
   {
     std::cout << "TIME: " << T2-T1 << std::endl;
+//    for(int i = 0; i<sizes.size(); i++)
+//    {
+//        std::cout<< sizes[i] << "  " << std::endl;
+//    }
 
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr src_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr out_colored(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-  //  pcl::visualization::PCLVisualizer viewer1("Raw");
-  //  viewer1.addPointCloud<pcl::PointXYZRGB>(out_colored, "filtered_green");
-
-  //  while (!viewer1.wasStopped()) {
-  //      viewer1.spinOnce();
-  //  }
 
     std::shared_ptr<pcl::visualization::PCLVisualizer> view (new pcl::visualization::PCLVisualizer("test"));
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointNormal> v1(mls_points,0,250,0);
     view->setBackgroundColor(0.0,0,0);
     view->addPointCloud<pcl::PointNormal>(mls_points,v1,"sample1");
-  //  view->addPointCloudNormals<pcl::PointNormal>(mls_points,50,20,"normal1");
-  //  view->addCoordinateSystem(1.0);
     view->spin();
 
 
   //  pcl::io::savePCDFile ("bun0-mls.pcd", *mls_points);
 
   }
-
-
-
   MPI_Finalize();
 }
