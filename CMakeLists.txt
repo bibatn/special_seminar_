@@ -9,6 +9,7 @@ set (CMAKE_MODULE_LINKER_FLAGS_INIT "-Wl,--copy-dt-needed-entries")
 include_directories(include)
 find_package(OpenMP REQUIRED)
 find_package(MPI REQUIRED)
+set(Boost_USE_STATIC_LIBS   ON)
 FIND_PACKAGE( Boost REQUIRED )
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
