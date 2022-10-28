@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+make_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(surface)
 
@@ -33,8 +33,8 @@ add_library(pcl_search SHARED IMPORTED)
 add_library(octree SHARED IMPORTED)
 add_library(boost_system SHARED IMPORTED)
 add_library(boost_filesystem SHARED IMPORTED)
-
-
+add_library(boost_thread_mt SHARED IMPORTED)
+add_library(boost_system_m SHARED IMPORTED)
 
 
 set_property(TARGET mls PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_surface.so.1.9.1")
@@ -42,10 +42,10 @@ set_property(TARGET common PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/e
 set_property(TARGET kdtree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_kdtree.so.1.9.1")
 set_property(TARGET pcl_search PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_search.so.1.9.1")
 set_property(TARGET octree PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/pcl/build/lib/libpcl_octree.so.1.9.1")
-set_property(TARGET boost_system PROPERTY IMPORTED_LOCATION "/usr/lib64/libboost_system-mt.so.1.53.0")
-set_property(TARGET boost_filesystem PROPERTY IMPORTED_LOCATION "/usr/lib64/libboost_filesystem.so.1.53.0")
-
-
+set_property(TARGET boost_system PROPERTY IMPORTED_LOCATION  "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/libboost_system-mt.so.1.53.0")
+set_property(TARGET boost_filesystem PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/libboost_filesystem.so.1.53.0")
+set_property(TARGET boost_thread_mt PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/libboost_thread-mt.so.1.53.0")
+set_property(TARGET boost_system_m PROPERTY IMPORTED_LOCATION "/home_edu/edu-cmc-sqi19/edu-cmc-sqi19-24/PCL/libboost_system.so.1.53.0")
 
 if (OPENMP_FOUND)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -66,7 +66,8 @@ target_link_libraries (surface pcl_search)
 target_link_libraries (surface octree)
 target_link_libraries (surface boost_system)
 target_link_libraries (surface boost_filesystem)
-
+target_link_libraries (surface boost_thread_mt)
+target_link_libraries (surface boost_system_m)
 
 target_link_libraries(surface ${MPI_LIBRARIES})
 TARGET_LINK_LIBRARIES(surface LINK_PUBLIC ${Boost_LIBRARIES} )
