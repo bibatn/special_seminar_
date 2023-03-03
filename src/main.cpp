@@ -40,6 +40,7 @@ main (int argc, char ** argv)
 
   mls_mpi cloud_part(rank, size);
   const std::string filename = argv[1];
+  const double search_radius = atof(argv[2]);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
   pcl::PCLPointCloud2 point_cloud2;
   cloud_part.read(filename, point_cloud2);
@@ -72,7 +73,7 @@ main (int argc, char ** argv)
   cloud_part.setInputCloud (cloud);
   cloud_part.setPolynomialOrder (2);
   cloud_part.setSearchMethod (tree);
-  cloud_part.setSearchRadius (0.09);
+  cloud_part.setSearchRadius (search_radius);
 
   cloud_part.setNumberOfThreads(1);
 
