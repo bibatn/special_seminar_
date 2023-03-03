@@ -1,5 +1,3 @@
-make_minimum_required(VERSION 3.5 FATAL_ERROR)
-
 project(surface)
 
 set(CMAKE_EXE_LINKER_FLAGS_INIT "-Wl,--copy-dt-needed-entries")
