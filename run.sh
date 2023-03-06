@@ -8,6 +8,18 @@
 # mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_025.pcd 0.0012
 # mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_0125.pcd 0.0012
 
-mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_split.pcd 0.0016
-mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_025.pcd 0.0016
-mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_0125.pcd 0.0016
+#mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_split.pcd 0.0016
+#mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_025.pcd 0.0016
+#mpisubmit.pl -p 1 --stdout result1 build/surface LadaVesta_normalized_0125.pcd 0.0016
+
+mpisubmit.pl -p 1 -t 4 --stdout result_4_08 build/surface LadaVesta_normalized_split.pcd 0.0008
+mpisubmit.pl -p 1 -t 4 --stdout result_4_08 build/surface LadaVesta_normalized_025.pcd 0.0008
+mpisubmit.pl -p 1 -t 4 --stdout result_4_08 build/surface LadaVesta_normalized_0125.pcd 0.0008
+
+mpisubmit.pl -p 1 -t 4 --stdout result_4_12 build/surface LadaVesta_normalized_split.pcd 0.0012
+mpisubmit.pl -p 1 -t 4 --stdout result_4_12 build/surface LadaVesta_normalized_025.pcd 0.0012
+mpisubmit.pl -p 1 -t 4 --stdout result_4_12 build/surface LadaVesta_normalized_0125.pcd 0.0012
+
+mpisubmit.pl -p 1 -t 4 --stdout result_4_16 build/surface LadaVesta_normalized_split.pcd 0.0016
+mpisubmit.pl -p 1 -t 4 --stdout result_4_16 build/surface LadaVesta_normalized_025.pcd 0.0016
+mpisubmit.pl -p 1 -t 4 --stdout result_4_16 build/surface LadaVesta_normalized_0125.pcd 0.0016
